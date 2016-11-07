@@ -172,7 +172,10 @@ const CGFloat BkVASDefaultMultipleLineFeeLabelFontSize = 10.0f;
 
     CGContextSetStrokeColorWithColor(ctx, [self vasColorForCurrentFeeType].CGColor);
     CGContextSetFillColorWithColor(ctx, [self vasColorForCurrentFeeType].CGColor);
-    CGContextAddPath(ctx, [self feeFramePath]);
+    
+    CGPathRef pathRef = [self newFeeFramePath];
+    CGContextAddPath(ctx, pathRef);
+    CGPathRelease(pathRef);
     CGContextDrawPath(ctx, kCGPathFillStroke);
 }
 
@@ -244,7 +247,8 @@ const CGFloat BkVASDefaultMultipleLineFeeLabelFontSize = 10.0f;
     return f;
 }
 
-- (CGMutablePathRef)feeFramePath {
+- (CGPathRef)newFeeFramePath
+{
     CGMutablePathRef path = CGPathCreateMutable();
 
     CGFloat paddingLeft = [self useBigSize] ? BkVASPhoneFeeLabelPaddingLeftBig : BkVASPhoneFeeLabelPaddingLeft;
